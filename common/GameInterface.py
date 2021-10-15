@@ -1,7 +1,7 @@
 from common.Actions import Actions
 
 
-class Interface:
+class GameInterface:
 
     def __init__(self, size):
         self.size = size

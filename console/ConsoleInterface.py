@@ -1,5 +1,5 @@
 from common.Actions import Actions
-from common.Interface import Interface
+from common.GameInterface import GameInterface
 import curses
 import random
 
@@ -14,7 +14,20 @@ def initscr():
     return stdscr
 
 
-class ConsoleInterface(Interface):
+def get_sign(coords: tuple, snake: Snake, lose: bool, food_coords: tuple) -> (str, int):
+    if snake.head_coords == coords:
+        return '%', curses.A_BOLD
+    elif snake.last_coords == coords:
+        return '#', curses.A_BOLD
+    elif coords in snake.nodes:
+        return 'o', curses.A_BOLD
+    elif food_coords == coords:
+        return '+', curses.A_STANDOUT
+    else:
+        return ('=', curses.A_DIM) if lose else ('.', curses.A_DIM)
+
+
+class ConsoleInterface(GameInterface):
 
     def __init__(self, size):
         super().__init__(size)
@@ -53,21 +66,10 @@ class ConsoleInterface(Interface):
     def draw(self, snake, lose, food_coords):
         for i in range(self.size):
             for j in range(self.size):
-                self.stdscr.addstr(i, j, self.get_sign((j, i), snake, lose, food_coords))
+                ch, attr = get_sign((j, i), snake, lose, food_coords)
+                self.stdscr.addstr(i, j, ch, attr)
         if lose:
             self.stdscr.addstr(self.size, 0, "You lose! Press 'q' to exit")
-
-    def get_sign(self, coords: tuple, snake: Snake, lose: bool, food_coords: tuple) -> str:
-        if snake.head_coords == coords:
-            return '🐲'
-        elif snake.last_coords == coords:
-            return '🛑'
-        elif coords in snake.nodes:
-            return '💢'
-        elif food_coords == coords:
-            return '🍺'
-        else:
-            return '🏴‍' if lose else self.random.choice(['🌱'])
 
     def exit_game(self):
         curses.nocbreak()

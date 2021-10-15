@@ -3,7 +3,7 @@ import os
 import pygame
 
 from common.Actions import Actions
-from common.Interface import Interface
+from common.GameInterface import GameInterface
 from common.Snake import Snake
 from graphical.sprites.Food import Food
 from graphical.sprites.SnakeBetween import SnakeBetween
@@ -18,7 +18,7 @@ def get_image(picname: str, block_size: int) -> pygame.Surface:
     return pygame.transform.scale(image, (block_size, block_size))
 
 
-class GraphicalInterface(Interface):
+class GraphicalInterface(GameInterface):
 
     def __init__(self, size, block_size=50, fun=False):
         super().__init__(size)
@@ -35,7 +35,7 @@ class GraphicalInterface(Interface):
             pygame.K_RIGHT: Actions.MOVE_RIGHT,
             pygame.K_q: Actions.EXIT
         }
-        self.headimage = get_image('headsnake.png', block_size)
+        self.headimage = get_image('andrew.png' if fun else 'headsnake.png', block_size)
         self.foodimage = get_image('beer.png' if fun else 'cake.png', block_size)
 
     def pygame_init(self):
