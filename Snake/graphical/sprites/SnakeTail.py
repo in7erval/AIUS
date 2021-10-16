@@ -19,7 +19,7 @@ def create_color(color_from, color_to, percentile) -> tuple:
     return tuple([calculate_gradient_component(color_from[i], color_to[i], percentile) for i in range(3)])
 
 
-class SnakeBetween(pygame.sprite.Sprite):
+class SnakeTail(pygame.sprite.Sprite):
 
     def __init__(self, coords: tuple, block_size: int, percentile: float, animation: bool, lose: bool):
         pygame.sprite.Sprite.__init__(self)
@@ -31,6 +31,12 @@ class SnakeBetween(pygame.sprite.Sprite):
             self.rect = pygame.draw.circle(self.image, self.color, (block_size // 2, block_size // 2),
                                            block_size // 2, width=calculate_width(block_size, percentile))
         else:
-            self.rect = pygame.draw.circle(self.image, (255, 0, 0), (block_size // 2, block_size // 2),
-                                           block_size // 2, width=calculate_width(block_size, percentile))
+            self.rect = pygame.draw.polygon(self.image, self.color, [(0, 0), (block_size // 2, block_size // 2),
+                                                                     (0, block_size),
+                                                                     (block_size // 2, block_size // 2),
+                                                                     (block_size, block_size),
+                                                                     (block_size // 2, block_size // 2),
+                                                                     (block_size, 0),
+                                                                     (block_size // 2, block_size // 2)],
+                                            width=calculate_width(block_size, percentile))
         self.rect.topleft = (coords[0] * block_size, coords[1] * block_size)

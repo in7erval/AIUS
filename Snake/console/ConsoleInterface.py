@@ -1,10 +1,21 @@
 import curses
-import random
 import sys
 
 from common.Actions import Actions
 from common.GameInterface import GameInterface
 from common.Snake import Snake
+
+KEYS_TO_COMMANDS = {
+    curses.KEY_DOWN: Actions.MOVE_DOWN,
+    curses.KEY_UP: Actions.MOVE_UP,
+    curses.KEY_LEFT: Actions.MOVE_LEFT,
+    curses.KEY_RIGHT: Actions.MOVE_RIGHT,
+    ord('s'): Actions.MOVE_DOWN,
+    ord('w'): Actions.MOVE_UP,
+    ord('a'): Actions.MOVE_LEFT,
+    ord('d'): Actions.MOVE_RIGHT,
+    ord('r'): Actions.RESET
+}
 
 
 def init_screen():
@@ -34,18 +45,6 @@ class ConsoleInterface(GameInterface):
         super().__init__(size)
         self.stdscr = init_screen()
         self.check_console()
-        self.random = random.Random()
-        self.keys_to_funcs = {
-            curses.KEY_DOWN: Actions.MOVE_DOWN,
-            curses.KEY_UP: Actions.MOVE_UP,
-            curses.KEY_LEFT: Actions.MOVE_LEFT,
-            curses.KEY_RIGHT: Actions.MOVE_RIGHT,
-            ord('s'): Actions.MOVE_DOWN,
-            ord('w'): Actions.MOVE_UP,
-            ord('a'): Actions.MOVE_LEFT,
-            ord('d'): Actions.MOVE_RIGHT,
-            ord('r'): Actions.RESET
-        }
 
     def parse_input(self, lose: bool) -> Actions:
         ch = self.stdscr.getch()
@@ -54,8 +53,8 @@ class ConsoleInterface(GameInterface):
         if ch == ord('r'):
             return Actions.RESET
         elif not lose:
-            if ch in self.keys_to_funcs.keys():
-                return self.keys_to_funcs[ch]
+            if ch in KEYS_TO_COMMANDS.keys():
+                return KEYS_TO_COMMANDS[ch]
         return Actions.UNKNOWN_COMMAND
 
     def check_console(self):
