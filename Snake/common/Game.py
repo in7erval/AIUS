@@ -19,6 +19,7 @@ class Game:
             Actions.MOVE_UP: self.move_up,
             Actions.MOVE_LEFT: self.move_left,
             Actions.MOVE_RIGHT: self.move_right,
+            Actions.RESET: self.reset,
             Actions.EXIT: self.exit,
             Actions.UNKNOWN_COMMAND: self.unknown_command
         }
@@ -63,6 +64,12 @@ class Game:
             self.snake.move(new_head_coords, is_food=is_food)
             if is_food:
                 self.generate_food_coords()
+
+    def reset(self):
+        self.snake = Snake(self.size)
+        self.generate_food_coords()
+        self.lose = False
+        self.running = True
 
     def check_new_coords(self, new_coords: tuple) -> bool:
         return (0 <= new_coords[0] < self.size and  # не вышли по ширине
