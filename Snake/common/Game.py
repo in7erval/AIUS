@@ -65,8 +65,8 @@ class Game:
                 self.generate_food_coords()
 
     def check_new_coords(self, new_coords: tuple) -> bool:
-        return (0 <= new_coords[0] < self.size and   # не вышли по ширине
-                0 <= new_coords[1] < self.size and   # не вышли по высоте
+        return (0 <= new_coords[0] < self.size and  # не вышли по ширине
+                0 <= new_coords[1] < self.size and  # не вышли по высоте
                 new_coords not in self.snake.nodes)  # не упёрлись в себя
 
     def exit(self):
