@@ -102,18 +102,21 @@ class GraphicalInterface(GameInterface):
         y = self.size * (self.block_size // 2) - text.get_size()[1] // 2
         self.screen.blit(text, (x, y))
 
+    def parse_inner_actions(self, event):
+        if event.key == pygame.K_g:
+            self.show_info = not self.show_info
+        if event.key == pygame.K_f:
+            self.animation_color = not self.animation_color
+        if event.key == pygame.K_t:
+            self.background = (self.background + 1) % (len(BACKGROUND_COLORS) + 1)
+
     def parse_input(self, lose: bool) -> Actions:
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
                 return Actions.EXIT
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_g:
-                    self.show_info = not self.show_info
-                if event.key == pygame.K_f:
-                    self.animation_color = not self.animation_color
-                if event.key == pygame.K_t:
-                    self.background = (self.background + 1) % (len(BACKGROUND_COLORS) + 1)
+                self.parse_inner_actions(event)
                 if event.key == pygame.K_q:
                     return Actions.EXIT
                 if event.key == pygame.K_r:

@@ -81,4 +81,5 @@ class Game:
         self.running = False
 
     def unknown_command(self):
+        """ Just ignore unknown command """
         pass
