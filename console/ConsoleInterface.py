@@ -63,7 +63,7 @@ class ConsoleInterface(GameInterface):
             self.exit_game()
             raise RuntimeError("Please, make console wider")
 
-    def draw(self, snake, lose, food_coords):
+    def draw(self, snake: Snake, lose: bool, food_coords: tuple):
         for i in range(self.size):
             for j in range(self.size):
                 ch, attr = get_sign((j, i), snake, lose, food_coords)

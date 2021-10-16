@@ -20,7 +20,7 @@ def get_image(picname: str, block_size: int) -> pygame.Surface:
 
 class GraphicalInterface(GameInterface):
 
-    def __init__(self, size, block_size=50, fun=False):
+    def __init__(self, size: int, block_size: int = 50, fun: bool = False):
         super().__init__(size)
         self.block_size = block_size
         self.pygame_init()
@@ -63,7 +63,7 @@ class GraphicalInterface(GameInterface):
             self.place_text('Game over!')
         pygame.display.flip()
 
-    def place_text(self, text):
+    def place_text(self, text: str):
         text = self.font.render(text, False, (255, 255, 255))
         x = self.size * self.block_size // 2 - self.block_size
         y = x

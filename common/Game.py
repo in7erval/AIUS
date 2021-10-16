@@ -51,11 +51,11 @@ class Game:
     def move_right(self):
         self.move(self.get_new_coords(dx=1))
 
-    def get_new_coords(self, dx=0, dy=0) -> tuple:
+    def get_new_coords(self, dx: int = 0, dy: int = 0) -> tuple:
         curr_coords = self.snake.head_coords
         return curr_coords[0] + dx, curr_coords[1] + dy
 
-    def move(self, new_head_coords):
+    def move(self, new_head_coords: tuple):
         if not self.check_new_coords(new_head_coords):
             self.lose = True
         else:
