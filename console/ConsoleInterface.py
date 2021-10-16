@@ -1,12 +1,12 @@
-from common.Actions import Actions
-from common.GameInterface import GameInterface
 import curses
 import random
 
+from common.Actions import Actions
+from common.GameInterface import GameInterface
 from common.Snake import Snake
 
 
-def initscr():
+def init_screen():
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
@@ -31,7 +31,7 @@ class ConsoleInterface(GameInterface):
 
     def __init__(self, size):
         super().__init__(size)
-        self.stdscr = initscr()
+        self.stdscr = init_screen()
         self.check_console()
         self.random = random.Random()
         self.keys_to_funcs = {
