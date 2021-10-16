@@ -12,3 +12,6 @@ class GameInterface:
 
     def parse_input(self, lose: bool) -> Actions:
         pass
+
+    def exit_game(self):
+        pass

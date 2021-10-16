@@ -1,5 +1,6 @@
 import curses
 import random
+import sys
 
 from common.Actions import Actions
 from common.GameInterface import GameInterface
@@ -81,3 +82,4 @@ class ConsoleInterface(GameInterface):
         self.stdscr.keypad(False)
         curses.echo()
         curses.endwin()
+        sys.exit()

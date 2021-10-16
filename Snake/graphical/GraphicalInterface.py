@@ -1,4 +1,5 @@
 import os
+import sys
 
 import pygame
 
@@ -88,3 +89,7 @@ class GraphicalInterface(GameInterface):
                 if not lose and event.key in self.keys_to_funcs.keys():
                     return self.keys_to_funcs[event.key]
         return Actions.UNKNOWN_COMMAND
+
+    def exit_game(self):
+        pygame.quit()
+        sys.exit()
