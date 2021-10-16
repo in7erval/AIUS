@@ -77,6 +77,7 @@ class Game:
                 new_coords not in self.snake.nodes)  # не упёрлись в себя
 
     def exit(self):
+        self.interface.exit_game()
         self.running = False
 
     def unknown_command(self):

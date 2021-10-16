@@ -30,7 +30,7 @@ def parse_args(parser: argparse.ArgumentParser):
         if args.cli:
             game = Game(ConsoleInterface(args.size))
         elif args.gui:
-            if args.size <= 10:
+            if args.size < 10:
                 print('Use size in range from 10 to 20!')
                 return
             game = Game(GraphicalInterface(args.size, fun=args.fun, block_size=args.block_size))
