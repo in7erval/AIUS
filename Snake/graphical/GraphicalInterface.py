@@ -13,6 +13,13 @@ from graphical.sprites.SnakeHead import SnakeHead
 FPS = 30
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GRAY = (120, 120, 120)
+BACKGROUND_COLORS = [BLACK, WHITE, GRAY]
+INFO_TEXTS = ['G - show/hide this info',
+              'R - reset',
+              'F - color animation',
+              'T - change bg color',
+              'Q - exit']
 
 
 def get_image(picname: str, block_size: int) -> pygame.Surface:
@@ -30,7 +37,8 @@ class GraphicalInterface(GameInterface):
         self.block_size = block_size
         self.pygame_init()
         self.animation_color = False
-        self.background_black = False
+        self.background = 0
+        self.show_info = False
         self.keys_to_funcs = {
             pygame.K_s: Actions.MOVE_DOWN,
             pygame.K_w: Actions.MOVE_UP,
@@ -45,6 +53,7 @@ class GraphicalInterface(GameInterface):
         }
         self.headimage = get_image('andrew.png' if fun else 'headsnake.png', block_size)
         self.foodimage = get_image('beer.png' if fun else 'cake.png', block_size)
+        self.background_image = get_image('background.png', block_size * size)
 
     def pygame_init(self):
         pygame.init()
@@ -57,10 +66,16 @@ class GraphicalInterface(GameInterface):
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
 
+    def fill_background(self):
+        if self.background == 0:
+            self.screen.blit(self.background_image, (0, 0))
+        else:
+            self.screen.fill(BACKGROUND_COLORS[self.background - 1])
+
     def draw(self, snake: Snake, lose: bool, food_coords: tuple):
         self.clock.tick(FPS)
         self.all_sprites.empty()
-        self.screen.fill(BLACK if self.background_black else WHITE)
+        self.fill_background()
         self.all_sprites.add(SnakeHead(snake.head_coords, self.block_size, lose, self.headimage))
         for i in range(1, len(snake.nodes)):
             self.all_sprites.add(SnakeBetween(snake.nodes[i], self.block_size, 1 - i / (len(snake.nodes) - 1),
@@ -74,10 +89,11 @@ class GraphicalInterface(GameInterface):
         pygame.display.flip()
 
     def place_info(self):
-        self.screen.blit(self.font.render('R - reset', False, (100, 100, 100)), (0, 0))
-        self.screen.blit(self.font.render("F - color animation", False, (100, 100, 100)), (0, 15))
-        self.screen.blit(self.font.render("T - black/white bg", False, (100, 100, 100)), (0, 30))
-        self.screen.blit(self.font.render("Q - exit", False, (100, 100, 100)), (0, 45))
+        self.screen.blit(self.font.render(INFO_TEXTS[0], False, (100, 100, 100)), (0, 0))
+        if self.show_info:
+            for i in range(1, len(INFO_TEXTS)):
+                y = self.font.size(INFO_TEXTS[i])[1] * i  # высота текста * номер
+                self.screen.blit(self.font.render(INFO_TEXTS[i], False, (100, 100, 100)), (0, y))
 
     def place_game_over_text(self):
         x = self.size * (self.block_size // 2) - int(self.block_size * 1.5)
@@ -90,10 +106,12 @@ class GraphicalInterface(GameInterface):
             if event.type == pygame.QUIT:
                 return Actions.EXIT
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_g:
+                    self.show_info = not self.show_info
                 if event.key == pygame.K_f:
                     self.animation_color = not self.animation_color
                 if event.key == pygame.K_t:
-                    self.background_black = not self.background_black
+                    self.background = (self.background + 1) % (len(BACKGROUND_COLORS) + 1)
                 if event.key == pygame.K_q:
                     return Actions.EXIT
                 if event.key == pygame.K_r:
