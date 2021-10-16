@@ -1,6 +1,6 @@
-from common.Game import Game
 import argparse
 
+from common.Game import Game
 from console.ConsoleInterface import ConsoleInterface
 from graphical.GraphicalInterface import GraphicalInterface
 
@@ -36,4 +36,3 @@ def parse_args(parser: argparse.ArgumentParser):
 if __name__ == '__main__':
     parser = init_argparse()
     parse_args(parser)
-

@@ -1,12 +1,12 @@
-from common.Actions import Actions
-from common.GameInterface import GameInterface
 import curses
 import random
 
+from common.Actions import Actions
+from common.GameInterface import GameInterface
 from common.Snake import Snake
 
 
-def initscr():
+def init_screen():
     stdscr = curses.initscr()
     curses.noecho()
     curses.cbreak()
@@ -31,7 +31,7 @@ class ConsoleInterface(GameInterface):
 
     def __init__(self, size):
         super().__init__(size)
-        self.stdscr = initscr()
+        self.stdscr = init_screen()
         self.check_console()
         self.random = random.Random()
         self.keys_to_funcs = {
@@ -63,7 +63,7 @@ class ConsoleInterface(GameInterface):
             self.exit_game()
             raise RuntimeError("Please, make console wider")
 
-    def draw(self, snake, lose, food_coords):
+    def draw(self, snake: Snake, lose: bool, food_coords: tuple):
         for i in range(self.size):
             for j in range(self.size):
                 ch, attr = get_sign((j, i), snake, lose, food_coords)
