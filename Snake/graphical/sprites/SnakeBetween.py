@@ -25,6 +25,7 @@ class SnakeBetween(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.colors = random.Random().choice(GRADIENTS) if animation else GRADIENTS[0]
         self.image = pygame.Surface((block_size, block_size))
+        self.image.set_alpha(255)
         self.color = create_color(self.colors[0], self.colors[1], percentile)
         if not lose:
             self.rect = pygame.draw.circle(self.image, self.color, (block_size // 2, block_size // 2),
