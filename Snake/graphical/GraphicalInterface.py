@@ -17,7 +17,7 @@ GRAY = (120, 120, 120)
 BACKGROUND_COLORS = [BLACK, WHITE, GRAY]
 INFO_TEXTS = ['G - show/hide this info',
               'R - reset',
-              'F - color animation',
+              'F - snake color animation',
               'T - change bg color',
               'Q - exit']
 
