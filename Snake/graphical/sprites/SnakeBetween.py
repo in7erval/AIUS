@@ -7,7 +7,7 @@ def calculate_width(block_size: int, percentile: float) -> int:
         return 1
     return width
 
-
+  
 class SnakeBetween(pygame.sprite.Sprite):
     def __init__(self, coords: tuple, block_size: int, percentile: float, lose=False):
         pygame.sprite.Sprite.__init__(self)
