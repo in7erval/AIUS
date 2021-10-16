@@ -11,34 +11,34 @@ def init_argparse() -> argparse.ArgumentParser:
     group = parser_new.add_mutually_exclusive_group(required=True)
     group.add_argument('--cli', action='store_true', help='Command line interface')
     group.add_argument('--gui', action='store_true', help='Graphical user interface')
-    innergroup = group.add_argument_group()
-    innergroup.add_argument('-B', '--block-size', help='block size in px (default: 50)', default=50, type=int)
-    innergroup.add_argument('-F', '--fun', action='store_true', help='fun game')
+    guigroup = group.add_argument_group()
+    guigroup.add_argument('-B', '--block-size', help='block size in px (default: 50)', default=50, type=int)
+    guigroup.add_argument('-F', '--fun', action='store_true', help='fun game')
     return parser_new
 
 
-def parse_args(parser: argparse.ArgumentParser):
-    args = parser.parse_args()
+def check_args(args):
     if args.size <= 3 or args.size > 20:
-        print('Use size in range from 4 to 20!')
-        return
+        raise RuntimeError('Use size in range from 4 to 20!')
     if args.block_size < 25 or args.block_size > 200:
-        print('Use block_size in range from 25 to 200!')
-        return
-    try:
-        game = None
-        if args.cli:
-            game = Game(ConsoleInterface(args.size))
-        elif args.gui:
-            if args.size < 10:
-                print('Use size in range from 10 to 20!')
-                return
-            game = Game(GraphicalInterface(args.size, fun=args.fun, block_size=args.block_size))
-        game.start()
-    except RuntimeError as err:
-        print(err.args[0])
+        raise RuntimeError('Use block_size in range from 25 to 200!')
+    if args.gui and args.size < 10:
+        print('Use size in range from 10 to 20!')
+
+
+def initialize_game(parser: argparse.ArgumentParser) -> Game:
+    args = parser.parse_args()
+    check_args(args)
+    if args.cli:
+        return Game(ConsoleInterface(args.size))
+    elif args.gui:
+        return Game(GraphicalInterface(args.size, fun=args.fun, block_size=args.block_size))
 
 
 if __name__ == '__main__':
-    parser = init_argparse()
-    parse_args(parser)
+    try:
+        parser = init_argparse()
+        game = initialize_game(parser)
+        game.start()
+    except RuntimeError as err:
+        print(err.args[0])

@@ -2,6 +2,7 @@ import pygame.sprite
 
 
 class Food(pygame.sprite.Sprite):
+
     def __init__(self, coords, block_size, lose, image):
         pygame.sprite.Sprite.__init__(self)
         self.image = image
