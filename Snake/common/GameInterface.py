@@ -8,10 +8,13 @@ class GameInterface:
         self.size = size
 
     def draw(self, snake: Snake, lose: bool, food_coords: tuple):
+        """ Draw current game state """
         pass
 
     def parse_input(self, lose: bool) -> Actions:
+        """ Parse input event """
         pass
 
     def exit_game(self):
+        """ Exit game and close interface """
         pass

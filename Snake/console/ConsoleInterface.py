@@ -52,9 +52,8 @@ class ConsoleInterface(GameInterface):
             return Actions.EXIT
         if ch == ord('r'):
             return Actions.RESET
-        elif not lose:
-            if ch in KEYS_TO_COMMANDS.keys():
-                return KEYS_TO_COMMANDS[ch]
+        elif not lose and ch in KEYS_TO_COMMANDS.keys():
+            return KEYS_TO_COMMANDS[ch]
         return Actions.UNKNOWN_COMMAND
 
     def check_console(self):
