@@ -83,12 +83,14 @@ class GraphicalInterface(GameInterface):
         self.all_sprites.add(Food(food_coords, self.block_size, lose, self.foodimage))
         self.all_sprites.update()
         self.all_sprites.draw(self.screen)
-        self.place_info()
+        self.place_info(len(snake.nodes))
         if lose:
             self.place_game_over_text()
         pygame.display.flip()
 
-    def place_info(self):
+    def place_info(self, score):
+        score_text = self.font.render("Snake's length: " + str(score), False, (255, 0, 0))
+        self.screen.blit(score_text, (self.size * self.block_size - score_text.get_size()[0], 0))
         self.screen.blit(self.font.render(INFO_TEXTS[0], False, (100, 100, 100)), (0, 0))
         if self.show_info:
             for i in range(1, len(INFO_TEXTS)):
@@ -96,9 +98,10 @@ class GraphicalInterface(GameInterface):
                 self.screen.blit(self.font.render(INFO_TEXTS[i], False, (100, 100, 100)), (0, y))
 
     def place_game_over_text(self):
-        x = self.size * (self.block_size // 2) - int(self.block_size * 1.5)
-        y = x + self.block_size // 2
-        self.screen.blit(self.font_game_over.render('Game over!', False, (255, 0, 255)), (x, y))
+        text = self.font_game_over.render('Game over!', False, (255, 0, 255))
+        x = self.size * (self.block_size // 2) - text.get_size()[0] // 2
+        y = self.size * (self.block_size // 2) - text.get_size()[1] // 2
+        self.screen.blit(text, (x, y))
 
     def parse_input(self, lose: bool) -> Actions:
         events = pygame.event.get()
