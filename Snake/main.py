@@ -22,11 +22,17 @@ def parse_args(parser: argparse.ArgumentParser):
     if args.size <= 3 or args.size > 20:
         print('Use size in range from 4 to 20!')
         return
+    if args.block_size < 25 or args.block_size > 200:
+        print('Use block_size in range from 25 to 200!')
+        return
     try:
         game = None
         if args.cli:
             game = Game(ConsoleInterface(args.size))
         elif args.gui:
+            if args.size <= 10:
+                print('Use size in range from 10 to 20!')
+                return
             game = Game(GraphicalInterface(args.size, fun=args.fun, block_size=args.block_size))
         game.start()
     except RuntimeError as err:

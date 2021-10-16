@@ -42,13 +42,16 @@ class ConsoleInterface(GameInterface):
             ord('s'): Actions.MOVE_DOWN,
             ord('w'): Actions.MOVE_UP,
             ord('a'): Actions.MOVE_LEFT,
-            ord('d'): Actions.MOVE_RIGHT
+            ord('d'): Actions.MOVE_RIGHT,
+            ord('r'): Actions.RESET
         }
 
     def parse_input(self, lose: bool) -> Actions:
         ch = self.stdscr.getch()
         if ch == ord('q'):
             return Actions.EXIT
+        if ch == ord('r'):
+            return Actions.RESET
         elif not lose:
             if ch in self.keys_to_funcs.keys():
                 return self.keys_to_funcs[ch]
@@ -64,12 +67,14 @@ class ConsoleInterface(GameInterface):
             raise RuntimeError("Please, make console wider")
 
     def draw(self, snake: Snake, lose: bool, food_coords: tuple):
+        self.stdscr.clear()
         for i in range(self.size):
             for j in range(self.size):
                 ch, attr = get_sign((j, i), snake, lose, food_coords)
                 self.stdscr.addstr(i, j, ch, attr)
         if lose:
             self.stdscr.addstr(self.size, 0, "You lose! Press 'q' to exit")
+            self.stdscr.addstr(self.size + 1, 0, "Press 'r' to restart")
 
     def exit_game(self):
         curses.nocbreak()

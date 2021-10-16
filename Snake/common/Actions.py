@@ -7,4 +7,5 @@ class Actions(Enum):
     MOVE_LEFT = 'MOVE_LEFT'
     MOVE_RIGHT = 'MOVE_RIGHT'
     EXIT = 'EXIT'
+    RESET = 'RESET'
     UNKNOWN_COMMAND = 'UNKNOWN_COMMAND'

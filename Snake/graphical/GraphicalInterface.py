@@ -33,6 +33,7 @@ class GraphicalInterface(GameInterface):
             pygame.K_UP: Actions.MOVE_UP,
             pygame.K_LEFT: Actions.MOVE_LEFT,
             pygame.K_RIGHT: Actions.MOVE_RIGHT,
+            pygame.K_r: Actions.RESET,
             pygame.K_q: Actions.EXIT
         }
         self.headimage = get_image('andrew.png' if fun else 'headsnake.png', block_size)
@@ -42,7 +43,7 @@ class GraphicalInterface(GameInterface):
         pygame.init()
         pygame.mixer.init()
         pygame.font.init()
-        self.font = pygame.font.SysFont('Comic Sans MS', 30)
+        self.font = pygame.font.SysFont('Comic Sans MS', self.block_size)
         self.screen = pygame.display.set_mode((self.size * self.block_size, self.size * self.block_size))
         pygame.display.set_caption('Snake')
         self.clock = pygame.time.Clock()
@@ -54,20 +55,25 @@ class GraphicalInterface(GameInterface):
         self.all_sprites.add(SnakeTail(snake.nodes[-1], self.block_size, lose))
         self.all_sprites.add(SnakeHead(snake.head_coords, self.block_size, lose, self.headimage))
         for i in range(1, len(snake.nodes) - 1):
-            self.all_sprites.add(SnakeBetween(snake.nodes[i], self.block_size, 1 - i / len(snake.nodes), lose))
+            self.all_sprites.add(SnakeBetween(snake.nodes[i], self.block_size, i / len(snake.nodes), lose))
         self.all_sprites.add(Food(food_coords, self.block_size, lose, self.foodimage))
         self.all_sprites.update()
         self.screen.fill((0, 0, 0))
         self.all_sprites.draw(self.screen)
         if lose:
-            self.place_text('Game over!')
+            self.place_game_over_text()
         pygame.display.flip()
 
-    def place_text(self, text: str):
-        text = self.font.render(text, False, (255, 255, 255))
+    def place_game_over_text(self):
         x = self.size * self.block_size // 2 - self.block_size
         y = x
-        self.screen.blit(text, (x, y))
+        self.screen.blit(self.font.render('Game over!', False, (255, 255, 255)), (x, y))
+        x = self.size * self.block_size // 2 - self.block_size
+        y = x + self.block_size
+        self.screen.blit(self.font.render("Press 'q' to exit", False, (255, 255, 255)), (x, y))
+        x = self.size * self.block_size // 2 - self.block_size
+        y = x + self.block_size * 2
+        self.screen.blit(self.font.render("Press 'r' to restart", False, (255, 255, 255)), (x, y))
 
     def parse_input(self, lose: bool) -> Actions:
         events = pygame.event.get()
@@ -77,6 +83,8 @@ class GraphicalInterface(GameInterface):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     return Actions.EXIT
+                if event.key == pygame.K_r:
+                    return Actions.RESET
                 if not lose and event.key in self.keys_to_funcs.keys():
                     return self.keys_to_funcs[event.key]
         return Actions.UNKNOWN_COMMAND
