@@ -56,7 +56,7 @@
 >  
 >  * ```python main.py --gui -S SIZE -B BLOCKSIZE```, где BLOCKSIZE - размер одной клетки в пикселях (по умолчанию равен 50)
 
-<img src="https://github.com/in7erval/AIUS/blob/master/Snake/assets/graphical.gif" width="500" height="500"/>
+<img src="https://github.com/in7erval/AIUS/blob/develop/Snake/assets/graphical.gif" width="500" height="500"/>
 
 ### P.S.
 1. Все команды выполняются из директории Snake
