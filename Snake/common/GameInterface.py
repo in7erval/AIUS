@@ -7,7 +7,7 @@ class GameInterface:
     def __init__(self, size: int):
         self.size = size
 
-    def draw(self, snake: Snake, lose: bool, food_coords: tuple):
+    def draw(self, snake: Snake, lose: bool, food_coords: tuple, snake_speed: int, single_key_mode: bool):
         """ Draw current game state """
         pass
 

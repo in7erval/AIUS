@@ -1,11 +1,17 @@
+import time
 from random import Random
 
 from common.Actions import Actions
 from common.GameInterface import GameInterface
 from common.Snake import Snake
+from console.ConsoleInterface import ConsoleInterface
+
+MAX_SPEED = 10
+MIN_SPEED = 1
 
 
 class Game:
+
     def __init__(self, interface: GameInterface):
         self.size = interface.size
         self.interface = interface
@@ -14,11 +20,19 @@ class Game:
         self.food_coords = None
         self.lose = False
         self.running = True
+        self.snake_moving = None
+        self.snake_speed = 5
+        # !!! ужасный костыль, консольный вариант не работает с постоянным движением
+        self.is_single_key_mode = True if isinstance(interface, ConsoleInterface) else False
+        self.clock = time.time()
         self.commands_to_funcs = {
             Actions.MOVE_DOWN: self.move_down,
             Actions.MOVE_UP: self.move_up,
             Actions.MOVE_LEFT: self.move_left,
             Actions.MOVE_RIGHT: self.move_right,
+            Actions.SINGLE_KEY_MODE: self.single_key_mode,
+            Actions.SPEED_UP: self.speed_up,
+            Actions.SPEED_DOWN: self.speed_down,
             Actions.RESET: self.reset,
             Actions.EXIT: self.exit,
             Actions.UNKNOWN_COMMAND: self.unknown_command
@@ -26,14 +40,26 @@ class Game:
 
     def start(self):
         self.generate_food_coords()
-        self.interface.draw(self.snake, self.lose, self.food_coords)
+        self.interface.draw(self.snake, self.lose, self.food_coords, self.snake_speed, self.is_single_key_mode)
         while self.running:
+            self.move_snake_if_not_single_key_mode()
             command = self.interface.parse_input(self.lose)
             self.parse_command(command)
-            self.interface.draw(self.snake, self.lose, self.food_coords)
+            self.interface.draw(self.snake, self.lose, self.food_coords, self.snake_speed, self.is_single_key_mode)
+
+    def move_snake_if_not_single_key_mode(self):
+        if not self.is_single_key_mode:
+            new_time = time.time()
+            if self.snake_moving is not None and new_time - self.clock > (MAX_SPEED + 1 - self.snake_speed) * 0.05:
+                self.clock = new_time
+                self.snake_moving()
 
     def parse_command(self, command: Actions):
-        self.commands_to_funcs[command]()
+        func = self.commands_to_funcs[command]
+        if not self.is_single_key_mode and func in (self.move_down, self.move_up, self.move_left, self.move_right):
+            self.snake_moving = func
+        else:
+            func()
 
     def generate_food_coords(self):
         self.food_coords = None
@@ -70,6 +96,7 @@ class Game:
         self.generate_food_coords()
         self.lose = False
         self.running = True
+        self.snake_moving = None
 
     def check_new_coords(self, new_coords: tuple) -> bool:
         return (0 <= new_coords[0] < self.size and  # не вышли по ширине
@@ -79,6 +106,16 @@ class Game:
     def exit(self):
         self.interface.exit_game()
         self.running = False
+
+    def single_key_mode(self):
+        self.is_single_key_mode = not self.is_single_key_mode
+        self.snake_moving = None
+
+    def speed_up(self):
+        self.snake_speed = MAX_SPEED if (self.snake_speed + 1) > MAX_SPEED else self.snake_speed + 1
+
+    def speed_down(self):
+        self.snake_speed = MIN_SPEED if (self.snake_speed - 1) < MIN_SPEED else self.snake_speed - 1
 
     def unknown_command(self):
         """ Just ignore unknown command """

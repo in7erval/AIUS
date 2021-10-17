@@ -15,11 +15,14 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (120, 120, 120)
 BACKGROUND_COLORS = [BLACK, WHITE, GRAY]
-INFO_TEXTS = ['G - show/hide this info',
+INFO_TEXTS = ['E - show/hide this info',
               'R - reset',
-              'F - snake color animation',
-              'T - change bg color',
-              'Q - exit']
+              'Z - snake color animation',
+              'X - change bg color',
+              'Q - exit',
+              'F - on/off single key mode',
+              'T - speed up',
+              'G - speed down']
 KEYS_TO_COMMANDS = {
     pygame.K_s: Actions.MOVE_DOWN,
     pygame.K_w: Actions.MOVE_UP,
@@ -29,6 +32,9 @@ KEYS_TO_COMMANDS = {
     pygame.K_UP: Actions.MOVE_UP,
     pygame.K_LEFT: Actions.MOVE_LEFT,
     pygame.K_RIGHT: Actions.MOVE_RIGHT,
+    pygame.K_f: Actions.SINGLE_KEY_MODE,
+    pygame.K_t: Actions.SPEED_UP,
+    pygame.K_g: Actions.SPEED_DOWN,
     pygame.K_r: Actions.RESET,
     pygame.K_q: Actions.EXIT
 }
@@ -59,7 +65,7 @@ class GraphicalInterface(GameInterface):
         pygame.init()
         pygame.font.init()
         self.font_game_over = pygame.font.SysFont('menlo', self.block_size // 2)
-        self.font = pygame.font.SysFont('menlo', 15)
+        self.font = pygame.font.SysFont('menlo', 10)
         self.screen = pygame.display.set_mode((self.size * self.block_size, self.size * self.block_size))
         pygame.display.set_caption('Snake')
         self.clock = pygame.time.Clock()
@@ -72,7 +78,7 @@ class GraphicalInterface(GameInterface):
         else:
             self.screen.fill(BACKGROUND_COLORS[self.background - 1])
 
-    def draw(self, snake: Snake, lose: bool, food_coords: tuple):
+    def draw(self, snake: Snake, lose: bool, food_coords: tuple, snake_speed: int, single_key_mode: bool):
         self.all_sprites.empty()
         self.fill_background()
         self.all_sprites.add(SnakeHead(snake.head_coords, self.block_size, lose, self.headimage))
@@ -82,19 +88,38 @@ class GraphicalInterface(GameInterface):
             snake_tail = SnakeTail(snake.nodes[i], self.block_size, percent, self.animation_color, lose)
             self.all_sprites.add(snake_tail)
         self.all_sprites.draw(self.screen)
-        self.place_info(len(snake.nodes))
+        self.place_info(len(snake.nodes), snake_speed, single_key_mode)
         if lose:
             self.place_game_over_text()
         pygame.display.flip()
 
-    def place_info(self, score):
+    def place_info(self, score: int, snake_speed: int, single_key_mode: bool):
         score_text = self.font.render("Snake's length: " + str(score), True, (255, 255, 0), (0, 0, 0))
+        speed_text = self.font.render("Snake's speed: " + self.get_snake_speed_text(snake_speed), True, (255, 255, 0),
+                                      (0, 0, 0))
+        single_text = self.font.render("Single key mode: " + str(single_key_mode), True, (255, 255, 0), (0, 0, 0))
         self.screen.blit(score_text, (self.size * self.block_size - score_text.get_size()[0], 0))
+        self.screen.blit(speed_text, (self.size * self.block_size - speed_text.get_size()[0], score_text.get_size()[1]))
+        self.screen.blit(single_text, (self.size * self.block_size - single_text.get_size()[0],
+                                       speed_text.get_size()[1] + score_text.get_size()[1]))
         self.screen.blit(self.font.render(INFO_TEXTS[0], True, (100, 100, 100), (30, 30, 30)), (0, 0))
         if self.show_info:
             for i in range(1, len(INFO_TEXTS)):
                 y = self.font.size(INFO_TEXTS[i])[1] * i  # высота текста * номер
                 self.screen.blit(self.font.render(INFO_TEXTS[i], True, (100, 100, 100), (30, 30, 30)), (0, y))
+
+    def get_snake_speed_text(self, snake_speed: int) -> str:
+        if snake_speed == 10:
+            return "MAX SPEEEED"
+        if snake_speed >= 9:
+            return "IMPOSSIBLE!1!1!!"
+        if snake_speed >= 7:
+            return "HARD!"
+        if snake_speed >= 5:
+            return "COMMON:)"
+        if snake_speed >= 3:
+            return "SLOW.."
+        return "SNAIL....."
 
     def place_game_over_text(self):
         text = self.font_game_over.render('Game over!', False, (255, 0, 255))
@@ -103,11 +128,11 @@ class GraphicalInterface(GameInterface):
         self.screen.blit(text, (x, y))
 
     def parse_inner_actions(self, event):
-        if event.key == pygame.K_g:
+        if event.key == pygame.K_e:
             self.show_info = not self.show_info
-        if event.key == pygame.K_f:
+        if event.key == pygame.K_z:
             self.animation_color = not self.animation_color
-        if event.key == pygame.K_t:
+        if event.key == pygame.K_x:
             self.background = (self.background + 1) % (len(BACKGROUND_COLORS) + 1)
 
     def parse_input(self, lose: bool) -> Actions:

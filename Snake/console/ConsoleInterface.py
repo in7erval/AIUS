@@ -65,15 +65,17 @@ class ConsoleInterface(GameInterface):
             self.exit_game()
             raise RuntimeError("Please, make console wider")
 
-    def draw(self, snake: Snake, lose: bool, food_coords: tuple):
+    def draw(self, snake: Snake, lose: bool, food_coords: tuple, snake_speed: int, single_key_mode: bool):
         self.stdscr.clear()
         for i in range(self.size):
             for j in range(self.size):
                 ch, attr = get_sign((j, i), snake, lose, food_coords)
                 self.stdscr.addstr(i, j, ch, attr)
-        if lose:
-            self.stdscr.addstr(self.size, 0, "You lose! Press 'q' to exit")
-            self.stdscr.addstr(self.size + 1, 0, "Press 'r' to restart")
+        self.print_info()
+
+    def print_info(self):
+        self.stdscr.addstr(self.size, 0, "Press 'r' to restart")
+        self.stdscr.addstr(self.size + 1, 0, "You lose! Press 'q' to exit")
 
     def exit_game(self):
         curses.nocbreak()
