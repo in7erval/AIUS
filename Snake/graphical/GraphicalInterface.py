@@ -22,7 +22,15 @@ INFO_TEXTS = ['E - show/hide this info',
               'Q - exit',
               'F - on/off single key mode',
               'T - speed up',
-              'G - speed down']
+              'G - speed down',
+              '1-5 - change snake color']
+TAIL_PALETTE = {
+    pygame.K_1: 0,
+    pygame.K_2: 1,
+    pygame.K_3: 2,
+    pygame.K_4: 3,
+    pygame.K_5: 4
+}
 KEYS_TO_COMMANDS = {
     pygame.K_s: Actions.MOVE_DOWN,
     pygame.K_w: Actions.MOVE_UP,
@@ -50,12 +58,13 @@ def get_image(picname: str, block_size: int) -> pygame.Surface:
 
 class GraphicalInterface(GameInterface):
 
-    def __init__(self, size: int, block_size: int = 50, fun: bool = False):
-        super().__init__(size)
+    def __init__(self, size: int, block_size: int = 50, fun: bool = False, cheat: bool = False):
+        super().__init__(size, cheat)
         self.block_size = block_size
         self.pygame_init()
         self.animation_color = False
         self.background = 0
+        self.tail_palette = 0
         self.show_info = False
         self.headimage = get_image('headsnake.png' if not fun else 'andrew.png', block_size)
         self.foodimage = get_image('cake.png' if not fun else 'beer.png', block_size)
@@ -78,20 +87,31 @@ class GraphicalInterface(GameInterface):
         else:
             self.screen.fill(BACKGROUND_COLORS[self.background - 1])
 
-    def draw(self, snake: Snake, lose: bool, food_coords: tuple, snake_speed: int, single_key_mode: bool):
+    def draw(self, snake: Snake, lose: bool, food_coords: tuple, snake_speed: int, single_key_mode: bool, win: bool):
         self.all_sprites.empty()
         self.fill_background()
         self.all_sprites.add(SnakeHead(snake.head_coords, self.block_size, lose, self.headimage))
         self.all_sprites.add(Food(food_coords, self.block_size, lose, self.foodimage))
         for i in range(1, len(snake.nodes)):
             percent = 1 - i / (len(snake.nodes) - 1)
-            snake_tail = SnakeTail(snake.nodes[i], self.block_size, percent, self.animation_color, lose)
+            snake_tail = SnakeTail(snake.nodes[i], self.block_size, percent, self.animation_color, lose, i,
+                                   self.tail_palette)
             self.all_sprites.add(snake_tail)
+        self.show_grid()
         self.all_sprites.draw(self.screen)
         self.place_info(len(snake.nodes), snake_speed, single_key_mode)
+        if win:
+            self.place_main_text("You win!")
         if lose:
-            self.place_game_over_text()
+            self.place_main_text("Game over!")
         pygame.display.flip()
+
+    def show_grid(self):
+        for i in range(0, self.size):
+            pygame.draw.line(self.screen, BLACK, (0, i * self.block_size),
+                             (self.block_size * self.size, i * self.block_size))
+            pygame.draw.line(self.screen, BLACK, (i * self.block_size, 0),
+                             (i * self.block_size, self.block_size * self.size))
 
     def place_info(self, score: int, snake_speed: int, single_key_mode: bool):
         score_text = self.font.render("Snake's length: " + str(score), True, (255, 255, 0), (0, 0, 0))
@@ -121,8 +141,8 @@ class GraphicalInterface(GameInterface):
             return "SLOW.."
         return "SNAIL....."
 
-    def place_game_over_text(self):
-        text = self.font_game_over.render('Game over!', False, (255, 0, 255))
+    def place_main_text(self, text: str):
+        text = self.font_game_over.render(text, False, (255, 0, 255))
         x = self.size * (self.block_size // 2) - text.get_size()[0] // 2
         y = self.size * (self.block_size // 2) - text.get_size()[1] // 2
         self.screen.blit(text, (x, y))
@@ -134,8 +154,10 @@ class GraphicalInterface(GameInterface):
             self.animation_color = not self.animation_color
         if event.key == pygame.K_x:
             self.background = (self.background + 1) % (len(BACKGROUND_COLORS) + 1)
+        if event.key in TAIL_PALETTE.keys():
+            self.tail_palette = TAIL_PALETTE[event.key]
 
-    def parse_input(self, lose: bool) -> Actions:
+    def parse_input(self, lose: bool, win: bool) -> Actions:
         events = pygame.event.get()
         for event in events:
             if event.type == pygame.QUIT:
@@ -146,7 +168,7 @@ class GraphicalInterface(GameInterface):
                     return Actions.EXIT
                 if event.key == pygame.K_r:
                     return Actions.RESET
-                if not lose and event.key in KEYS_TO_COMMANDS.keys():
+                if not lose and not win and event.key in KEYS_TO_COMMANDS.keys():
                     return KEYS_TO_COMMANDS[event.key]
         return Actions.UNKNOWN_COMMAND
 
