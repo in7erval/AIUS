@@ -14,6 +14,7 @@ def init_argparse() -> argparse.ArgumentParser:
     guigroup = group.add_argument_group()
     guigroup.add_argument('-B', '--block-size', help='block size in px (default: 50)', default=50, type=int)
     guigroup.add_argument('-F', '--fun', action='store_true', help='fun game')
+    guigroup.add_argument('-C', '--cheat-mode', action='store_true', help='cheat mode')
     return parser_new
 
 
@@ -23,16 +24,16 @@ def check_args(args):
     if args.block_size < 25 or args.block_size > 200:
         raise RuntimeError('Use block_size in range from 25 to 200!')
     if args.gui and args.size < 10:
-        print('Use size in range from 10 to 20!')
+        raise RuntimeError('Use size in range from 10 to 20!')
 
 
 def initialize_game(parser: argparse.ArgumentParser) -> Game:
     args = parser.parse_args()
     check_args(args)
     if args.cli:
-        return Game(ConsoleInterface(args.size))
+        return Game(ConsoleInterface(args.size, cheat=args.cheat_mode))
     elif args.gui:
-        return Game(GraphicalInterface(args.size, fun=args.fun, block_size=args.block_size))
+        return Game(GraphicalInterface(args.size, fun=args.fun, block_size=args.block_size, cheat=args.cheat_mode))
 
 
 if __name__ == '__main__':

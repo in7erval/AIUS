@@ -22,6 +22,8 @@ class Game:
         self.running = True
         self.snake_moving = None
         self.snake_speed = 5
+        self.win = False
+        self.cheat_mode = interface.cheat_mode
         # !!! ужасный костыль, консольный вариант не работает с постоянным движением
         self.is_single_key_mode = True if isinstance(interface, ConsoleInterface) else False
         self.clock = time.time()
@@ -40,12 +42,14 @@ class Game:
 
     def start(self):
         self.generate_food_coords()
-        self.interface.draw(self.snake, self.lose, self.food_coords, self.snake_speed, self.is_single_key_mode)
+        self.interface.draw(self.snake, self.lose, self.food_coords, self.snake_speed, self.is_single_key_mode,
+                            self.win)
         while self.running:
             self.move_snake_if_not_single_key_mode()
-            command = self.interface.parse_input(self.lose)
+            command = self.interface.parse_input(self.lose, self.win)
             self.parse_command(command)
-            self.interface.draw(self.snake, self.lose, self.food_coords, self.snake_speed, self.is_single_key_mode)
+            self.interface.draw(self.snake, self.lose, self.food_coords, self.snake_speed, self.is_single_key_mode,
+                                self.win)
 
     def move_snake_if_not_single_key_mode(self):
         if not self.is_single_key_mode:
@@ -62,9 +66,22 @@ class Game:
             func()
 
     def generate_food_coords(self):
-        self.food_coords = None
-        while self.food_coords is None or self.food_coords in self.snake.nodes:  # пока координаты вкусняшки на змейке
-            self.food_coords = (self.random.randint(0, self.size - 1), self.random.randint(0, self.size - 1))
+        if len(self.snake.nodes) == self.size * self.size:
+            self.win = True
+        else:
+            # >>>>>> ЧИТЫ!!!!!! <<<<<<
+            if self.cheat_mode:
+                potential_food = [(self.snake.head_coords[0] + 1, self.snake.head_coords[1]),
+                                  (self.snake.head_coords[0], self.snake.head_coords[1] + 1),
+                                  (self.snake.head_coords[0] - 1, self.snake.head_coords[1]),
+                                  (self.snake.head_coords[0], self.snake.head_coords[1] - 1)]
+                for food in potential_food:
+                    if food not in self.snake.nodes and 0 <= food[0] < self.size and 0 <= food[1] < self.size:
+                        self.food_coords = food
+            else:
+                self.food_coords = None
+                while self.food_coords is None or self.food_coords in self.snake.nodes:  # пока координаты вкусняшки на змейке
+                    self.food_coords = (self.random.randint(0, self.size - 1), self.random.randint(0, self.size - 1))
 
     def move_up(self):
         self.move(self.get_new_coords(dy=-1))
@@ -97,6 +114,7 @@ class Game:
         self.lose = False
         self.running = True
         self.snake_moving = None
+        self.win = False
 
     def check_new_coords(self, new_coords: tuple) -> bool:
         return (0 <= new_coords[0] < self.size and  # не вышли по ширине
