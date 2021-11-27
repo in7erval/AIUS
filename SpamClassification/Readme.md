@@ -1,3 +1,8 @@
+[:arrow_down: TO_RESULTS](#Results)
+
+
+## Файл SpamClassification.ipynb
+
 Читаем файл
 
 
@@ -488,7 +493,7 @@ print(classification_report(y_train, y_train_predict))
 print("Результаты для тестовой выборки")
 print(classification_report(y_test, y_predict))
 ```
-
+## Results
     Результаты для тренировочной выборки
                   precision    recall  f1-score   support
     
