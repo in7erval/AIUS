@@ -17,5 +17,5 @@
 ## Список работ:
 ### 1. ["Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake)
 * Простенькая игра с двумя реализациями (консоль & графика)
-### 2. В ожидании...
+### 2. [Задача классификации сообщений "Спам"/"Не спам"](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
 
