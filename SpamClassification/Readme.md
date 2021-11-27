@@ -1,7 +1,7 @@
 [:arrow_down: TO_RESULTS](#Results)
 
 
-## Файл SpamClassification.ipynb ([ссылочка на него](https://github.com/in7erval/AIUS/tree/master/SpamClassification/SpamClassification.ipynb))
+## Файл SpamClassification.ipynb ([ссылочка на него](https://github.com/in7erval/AIUS/blob/check-spam/SpamClassification/SpamClassification.ipynb))
 
 Читаем файл
 
