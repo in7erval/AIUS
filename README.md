@@ -12,10 +12,8 @@
                                                                               
 **Посмотрел? Поставь :star: репозиторию `and use your brain, dude`!**
 
-> Для подробной информации по каждой работе жми на название.
-
 ## Список работ:
-### 1. ["Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake)
-* Простенькая игра с двумя реализациями (консоль & графика)
-### 2. [Задача классификации сообщений "Спам"/"Не спам"](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
+1. [Игра "Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake)
+2. [Классификация спама](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
+3. [Задача регрессии для предсказания](https://github.com/in7erval/AIUS/tree/master/Regression)
 
