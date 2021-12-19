@@ -27,4 +27,4 @@
         RMSE = 0.0023
         R2 = 0.96
 
-Остальная информация [тут](https://github.com/in7erval/AIUS/blob/regression/Regression/Regression.ipynb) 
+Остальная информация [тут](https://github.com/in7erval/AIUS/blob/regression/Regression/regression.ipynb) 
