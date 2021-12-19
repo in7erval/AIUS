@@ -1,47 +1,19 @@
 # Репозиторий для работ по АИУС (7 семестр)
 
+<p align="left">
+<img src="https://raster.shields.io/github/last-commit/in7erval/AIUS">
+<img src="https://raster.shields.io/badge/made_by-in7erval-blue">
+<img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg">
+<img src="https://raster.shields.io/github/repo-size/in7erval/AIUS">
+<a href="https://sonarcloud.io/dashboard?id=in7erval_AIUS"><img src="https://sonarcloud.io/api/project_badges/measure?project=in7erval_AIUS&metric=ncloc"></a>
+<a href="https://sonarcloud.io/dashboard?id=in7erval_AIUS"><img src="https://sonarcloud.io/api/project_badges/measure?project=in7erval_AIUS&metric=reliability_rating"></a>
+<a href="https://sonarcloud.io/dashboard?id=in7erval_AIUS"><img src="https://sonarcloud.io/api/project_badges/measure?project=in7erval_AIUS&metric=sqale_rating"></a>
+</p>
+                                                                              
+**Посмотрел? Поставь :star: репозиторию `and use your brain, dude`!**
+
 ## Список работ:
-1. [Игра "Змейка"](#1-игра-змейка)
-2. [Классификация спама](#2-классификация-спама)
-3. [Задача регрессии для предсказания](#3-задача-регрессии-для-предсказания)
+1. [Игра "Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake)
+2. [Классификация спама](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
+3. [Задача регрессии для предсказания](https://github.com/in7erval/AIUS/tree/master/Regression)
 
-## 1. [Игра "Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake). 
-### Консольный режим. 
-  Управление непосредственно в консоли с помощью клавиш WASD или стрелок. Выйти в любой момент можно с помощью клавиши Q.
-
-  **Usage:**
-  >  * ```python main.py --cli``` 
-  >
-  >  или 
-  >
-  >  * ```python main.py --cli -S SIZE```, где SIZE - размер поля (по умолчанию равен 10)
-### Графический режим.
-  Управление в отдельном окне с помощью клавиш WASD или стрелок. Выйти можно с помощью клавиши Q или нажатием на крестик у окна.
-
-**Usage:**
->
->  Для начала установить библиотеку *Pygame*:
->
->  * ```pip install pygame``` 
->  
->  После этого можно использовать команду
->  
->  * ```python main.py --gui``` 
->  
->  или
->  
->  * ```python main.py --gui -S SIZE -B BLOCKSIZE```, где BLOCKSIZE - размер одной клетки в пикселях (по умолчанию равен 50)
-  
-### P.S.
-1. Все команды выполняются из директории Snake
-2. Если после прочтения инструкции всё равно ничего не понял, используй
-   * ```python main.py --help``` :+1:
-
-[Назад к списку работ :arrow_up:](#список-работ)
-## 2. [Классификация спама](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
-
-[Назад к списку работ :arrow_up:](#список-работ)
-
-## 3. [Задача регрессии для предсказания](https://github.com/in7erval/AIUS/tree/master/Regression)
-
-[Назад к списку работ :arrow_up:](#список-работ)
