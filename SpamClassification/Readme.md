@@ -1,30 +1,22 @@
-## Результаты для Линейной регрессии
-    Предсказание Y1:
-        RMSE = 0.038
-        R2 = 0.906
-    Предсказание Y2:
-        RMSE = 0.039
-        R2 = 0.883
-## Результаты для Градиентного бустинга
-    Предсказание Y1:
-        RMSE = 0.00065
-        R2 = 0.9997
-    Предсказание Y2:
-        RMSE = 0.019
-        R2 = 0.971
-## Результаты для Метода опорных векторов
-    Предсказание Y1:
-        RMSE = 0.0055
-        R2 = 0.800
-    Предсказание Y2:
-        RMSE = 0.022
-        R2 = 0.961
-## Результаты для Случайного леса
-    Предсказание Y1:
-        RMSE = 0.00066
-        R2 = 0.997
-    Предсказание Y2:
-        RMSE = 0.0023
-        R2 = 0.96
+## Результаты 
+    Результаты для тренировочной выборки
+                  precision    recall  f1-score   support
+    
+        not_spam       1.00      1.00      1.00      3883
+            spam       0.99      0.97      0.98       576
+    
+        accuracy                           0.99      4459
+       macro avg       0.99      0.98      0.99      4459
+    weighted avg       0.99      0.99      0.99      4459
+    
+    Результаты для тестовой выборки
+                  precision    recall  f1-score   support
+    
+        not_spam       0.99      1.00      0.99       944
+            spam       0.98      0.93      0.95       171
+    
+        accuracy                           0.99      1115
+       macro avg       0.98      0.96      0.97      1115
+    weighted avg       0.99      0.99      0.99      1115
 
-Остальная информация [тут](https://github.com/in7erval/AIUS/blob/regression/Regression/Regression.ipynb) 
+Остальная информация [тут](https://github.com/in7erval/AIUS/blob/check-spam/SpamClassification/SpamClassification.ipynb) 
