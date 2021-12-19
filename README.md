@@ -16,4 +16,5 @@
 1. [Игра "Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake)
 2. [Классификация спама](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
 3. [Задача регрессии для предсказания](https://github.com/in7erval/AIUS/tree/master/Regression)
+4. [Задача кластеризации](https://github.com/in7erval/AIUS/tree/master/Clusterization)
 
