@@ -37,6 +37,6 @@
    * ```python main.py --help``` :+1:
 
 [Назад к списку работ :arrow_up:](#список-работ)
-## 2. В ожидании....
+## 2. [Игра "Змейка"](https://github.com/in7erval/AIUS/tree/master/Snake)
 
 [Назад к списку работ :arrow_up:](#список-работ)
