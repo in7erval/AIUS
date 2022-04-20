@@ -1,4 +1,4 @@
-# Репозиторий для работ по АИУС (7 семестр)
+# Репозиторий для работ по АИУС (7,8 семестр)
 
 <p align="left">
 <img src="https://raster.shields.io/github/last-commit/in7erval/AIUS">
@@ -17,4 +17,5 @@
 2. [Классификация спама](https://github.com/in7erval/AIUS/tree/master/SpamClassification)
 3. [Задача регрессии для предсказания](https://github.com/in7erval/AIUS/tree/master/Regression)
 4. [Задача кластеризации](https://github.com/in7erval/AIUS/tree/master/Clusterization)
+5. [API](https://github.com/in7erval/AIUS/tree/master/API)
 
